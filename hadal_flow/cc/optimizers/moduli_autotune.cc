@@ -106,9 +106,12 @@ Status AddScalarConstNode(T value, utils::Mutation* mutation,
       tensor->add_uint64_val(v);
     }
   } else {
+    // clang-format off
     []<bool flag = false>() {
       static_assert(flag, "AddScalarConstNode does not support this type");
+
     }();
+    // clang-format on
   }
   tensor->set_allocated_tensor_shape(tensor_shape.release());
   (*node.mutable_attr())["value"].set_allocated_tensor(tensor.release());

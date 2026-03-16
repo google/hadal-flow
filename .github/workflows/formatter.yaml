@@ -31,4 +31,6 @@ jobs:
           echo "Code has not been formatted. Please run the formatters as described by the README."
           echo "Files changed:"
           git status
+          echo "Diff:"
+          git diff
           return 1
