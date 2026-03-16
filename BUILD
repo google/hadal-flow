@@ -8,7 +8,7 @@ load("@python_versions//3.9:defs.bzl", compile_pip_requirements_3_9 = "compile_p
 load("@rules_python//python:defs.bzl", "py_binary")
 load("@rules_python//python:packaging.bzl", "py_wheel")
 
-DEFAULT_PYTHON = "3.10"  # Also see ./MODULE.bazel
+DEFAULT_PYTHON = "3.12"  # Also see ./MODULE.bazel
 
 exports_files([
     "LICENSE",

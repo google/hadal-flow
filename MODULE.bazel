@@ -11,7 +11,7 @@ SUPPORTED_PYTHON_VERSIONS = [
     "3.13",
 ]  # Also see ./.github/workflows/wheel.yaml
 
-DEFAULT_PYTHON = "3.10"  # Also see ./BUILD
+DEFAULT_PYTHON = "3.12"  # Also see ./BUILD
 
 bazel_dep(name = "rules_python", version = "1.6.3")
 
