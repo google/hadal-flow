@@ -1,8 +1,9 @@
 bazel-bin
-bazel-tf-shell
+bazel-hadal-flow
 bazel-out
 bazel-testlogs
 __pycache__
 **.venv
 *.whl
 MODULE.bazel.lock
+.claude

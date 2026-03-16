@@ -27,7 +27,7 @@ if not bazel_dir_var in os.environ:
     raise Exception(f"{bazel_dir_var} not defined")
 build_workspace_dir = os.environ[bazel_dir_var]
 bazel_bin_dir = build_workspace_dir + "/bazel-bin/"
-whl_prefix = "tf_shell"
+whl_prefix = "hadal_flow"
 
 
 class ABIVersion(Enum):

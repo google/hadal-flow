@@ -95,7 +95,7 @@
         ".git/subtree-cache/**": true,
         "bazel-bin/**": true,
         "bazel-out/**": true,
-        "bazel-tf-shell/**": true,
+        "bazel-hadal_flow/**": true,
         "third_party/**": true,
         "~/.cache/**": true,
         "**/.cache/**": true,

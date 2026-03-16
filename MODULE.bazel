@@ -1,5 +1,5 @@
 module(
-    name = "tf-shell",
+    name = "hadal_flow",
     version = "0.5.0",
 )
 

@@ -172,7 +172,7 @@ print(
     "\nExample configuration:\n\n"
     f"# Num plaintext bits: {plaintext_bits}, noise bits: {total_noise_bits}\n"
     f"# Max plaintext value: {max_scaled_plaintext}, est error: {(max_error/max_scaled_plaintext):.3f}%\n"
-    f"context = tf_shell.create_context64(\n"
+    f"context = hadal_flow.create_context64(\n"
     f"    log_n={log_n},\n"
     f"    main_moduli={found_primes},\n"
     f"    plaintext_modulus={plaintext_modulus},\n"

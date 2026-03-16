@@ -125,7 +125,7 @@ py_wheel(
         "//:LICENSE": "LICENSE",
         "//:README.md": "README",
     },
-    homepage = "https://github.com/google/tf-shell",
+    homepage = "https://github.com/google/hadal-flow",
     license = "Apache 2.0",
     platform = select({
         "@bazel_tools//src/conditions:windows_x64": "win_amd64",
@@ -141,10 +141,10 @@ py_wheel(
     # The summary is tailored for each python version because PyPI prevents
     # wheel uploads for different versions which have the same contents.
     # Changing the summary is sufficient to allow re-uploads.
-    summary = "TF-Shell: Privacy preserving machine learning with Tensorflow and the SHELL encryption library, built for python " + DEFAULT_PYTHON + ".",
+    summary = "Hadal: Privacy preserving machine learning with Tensorflow and the SHELL encryption library, built for python " + DEFAULT_PYTHON + ".",
     version = module_version(),
     deps = [
-        "//tf_shell:tf_shell_pkg",
-        "//tf_shell_ml:tf_shell_ml_pkg",
+        "//hadal_flow:hadal_flow_pkg",
+        "//hadal_ml:hadal_ml_pkg",
     ],
 )

@@ -1,10 +1,11 @@
-# tf-shell
-[![Build](https://github.com/google/tf-shell/actions/workflows/wheel.yaml/badge.svg)](https://github.com/google/tf-shell/actions/workflows/wheel.yaml)
-[![Formatting](https://github.com/google/tf-shell/actions/workflows/formatter.yaml/badge.svg)](https://github.com/google/tf-shell/actions/workflows/formatter.yaml)
+# hadal-flow
 
-Train models with strong privacy, even when you can't trust anyone.
+[![Build](https://github.com/google/hadal-flow/actions/workflows/wheel.yaml/badge.svg)](https://github.com/google/hadal-flow/actions/workflows/wheel.yaml)
+[![Formatting](https://github.com/google/hadal-flow/actions/workflows/formatter.yaml/badge.svg)](https://github.com/google/hadal-flow/actions/workflows/formatter.yaml)
 
-`tf-shell` is a TensorFlow extension that uses Homomorphic Encryption (HE) to
+Train ML models with strong privacy.
+
+`hadal_flow` is a TensorFlow extension that uses Homomorphic Encryption (HE) to
 train models with centralized label differential privacy (Label DP) guarantees,
 without requiring a trusted third party.
 
@@ -18,12 +19,13 @@ This is not an officially supported Google product.
 ## Getting Started
 
 ```bash
-pip install tf-shell
+pip install hadal-flow
 ```
 
 See `./examples/` for how to use the library.
 
 ## The Problem: Centralized DP without a Trusted Party
+
 When training with high privacy requirements (e.g., $\epsilon \le 1$),
 centralized DP (like DP-SGD) provides much higher model accuracy than local DP
 (like randomized response). However, centralized DP traditionally requires a
@@ -34,7 +36,8 @@ Party L has the secret labels and cannot share them. How can Party F train its
 model using Party L's labels without a trusted intermediary?
 
 ## The Solution: HE-based Backpropagation
-`tf-shell` uses Homomorphic Encryption (via Google's
+
+`hadal-flow` uses Homomorphic Encryption (via Google's
 [SHELL](https://github.com/google/shell-encryption/) library) to
 cryptographically "simulate" the trusted curator. The core technical idea is
 based on the Features-And-Model-vs-Labels (FAML) data partitioning:
@@ -53,11 +56,12 @@ The result is a model trained with the high utility of centralized DP, but Party
 F never sees Party L's individual labels.
 
 ## What's Included?
+
 The library is split into two packages:
 
-- tf_shell: The base package. It integrates TensorFlow with the SHELL library,
+- hadal_flow: The base package. It integrates TensorFlow with the SHELL library,
 providing a ShellTensor type for basic HE-enabled computations.
-- tf_shell_ml: The machine learning library. It implements two different
+- hadal_ml: The machine learning library. It implements two different
 protocols for the encrypted backpropagation step:
   - POSTSCALE: A novel protocol that is highly efficient for models with a low
   number of output classes (e.g., binary classification).
@@ -73,8 +77,8 @@ protocols for the encrypted backpropagation step:
 2. Run the tests.
 
     ```bash
-    bazel test //tf_shell/...
-    bazel test //tf_shell_ml/...  # Large tests, requires 128GB of memory.
+    bazel test //hadal_flow/...
+    bazel test //hadal_ml/...  # Large tests, requires 128GB of memory.
     ```
 
 3. Build the code.
@@ -94,7 +98,7 @@ protocols for the encrypted backpropagation step:
     Then install.
 
     ```bash
-    pip install --force-reinstall tf_shell-*.whl  # Run in target environment.
+    pip install --force-reinstall hadal_flow-*.whl  # Run in target environment.
     ```
 
 Note the cpython api is not compatible across minor python versions (e.g. 3.10,
