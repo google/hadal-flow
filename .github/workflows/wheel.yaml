@@ -26,8 +26,8 @@ jobs:
       - name: Build wheel
         shell: bash
         run: |
-          sed -i 's/DEFAULT_PYTHON = "3.10"/DEFAULT_PYTHON = "${{ matrix.python-version }}"/' ./MODULE.bazel
-          sed -i 's/DEFAULT_PYTHON = "3.10"/DEFAULT_PYTHON = "${{ matrix.python-version }}"/' ./BUILD
+          sed -i 's/DEFAULT_PYTHON = "[0-9.]*"/DEFAULT_PYTHON = "${{ matrix.python-version }}"/' ./MODULE.bazel
+          sed -i 's/DEFAULT_PYTHON = "[0-9.]*"/DEFAULT_PYTHON = "${{ matrix.python-version }}"/' ./BUILD
           bazelisk clean --expunge
           bazelisk build //:wheel
           bazelisk run //:wheel_rename
