@@ -1,6 +1,6 @@
 module(
     name = "hadal_flow",
-    version = "0.6.1",
+    version = "0.6.2",
 )
 
 SUPPORTED_PYTHON_VERSIONS = [
