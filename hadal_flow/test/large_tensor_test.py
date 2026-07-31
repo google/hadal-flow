@@ -44,10 +44,12 @@ def run_features_party(fs_path):
             "FilesystemDistributionOptimizer"
         )
 
+    port_features = 3234 if fs_path else 3236
+    port_labels = 3235 if fs_path else 3237
     cluster = tf.train.ClusterSpec(
         {
-            f"{features_party_job}": ["localhost:3234"],
-            f"{labels_party_job}": ["localhost:3235"],
+            f"{features_party_job}": [f"localhost:{port_features}"],
+            f"{labels_party_job}": [f"localhost:{port_labels}"],
         }
     )
 
@@ -172,15 +174,18 @@ if __name__ == "__main__":
         hadal.enable_optimization()
 
         config = tf.compat.v1.ConfigProto()
-        if os.environ.get("HADAL_FILESYSTEM_PATH"):
+        fs_path = os.environ.get("HADAL_FILESYSTEM_PATH")
+        if fs_path:
             config.graph_options.rewrite_options.custom_optimizers.add().name = (
                 "FilesystemDistributionOptimizer"
             )
 
+        port_features = 3234 if fs_path else 3236
+        port_labels = 3235 if fs_path else 3237
         cluster = tf.train.ClusterSpec(
             {
-                f"{features_party_job}": ["localhost:3234"],
-                f"{labels_party_job}": ["localhost:3235"],
+                f"{features_party_job}": [f"localhost:{port_features}"],
+                f"{labels_party_job}": [f"localhost:{port_labels}"],
             }
         )
         server = tf.distribute.Server(
