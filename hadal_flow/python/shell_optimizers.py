@@ -93,6 +93,8 @@ from tensorflow.python.util import compat
 #    or prioritize 0-input constant nodes before dependent operations.
 # -----------------------------------------------------------------------------
 orig_copy_non_source = lift_to_graph._copy_non_source
+
+
 def patched_copy_non_source(op, graph, op_map, base_graph):
     input_mutations = []
     control_mutations = []
@@ -100,20 +102,26 @@ def patched_copy_non_source(op, graph, op_map, base_graph):
     for input_index, original_input in enumerate(op.inputs):
         copied_input = op_map.get(original_input, None)
         if copied_input is None:
-            if (op.type in ("TensorListReserve", "TensorListReserveV2") and
-                input_index == 0 and
-                original_input.dtype in (dtypes.int32, dtypes.int64) and
-                original_input.shape == ()):
+            if (
+                op.type in ("TensorListReserve", "TensorListReserveV2")
+                and input_index == 0
+                and original_input.dtype in (dtypes.int32, dtypes.int64)
+                and original_input.shape == ()
+            ):
                 copied_input = constant_op.constant(-1, dtype=original_input.dtype)
             else:
                 copied_input = array_ops.placeholder(
                     name="unused_control_flow_input",
                     shape=original_input.shape,
-                    dtype=original_input.dtype)
+                    dtype=original_input.dtype,
+                )
             input_mutations.append(
-                lift_to_graph._InputMutation(copied_op=None,
-                                             input_index=input_index,
-                                             old_graph_tensor=original_input))
+                lift_to_graph._InputMutation(
+                    copied_op=None,
+                    input_index=input_index,
+                    old_graph_tensor=original_input,
+                )
+            )
         copied_inputs.append(copied_input)
 
     copied_control_inputs = []
@@ -121,8 +129,10 @@ def patched_copy_non_source(op, graph, op_map, base_graph):
         copied_control_input = op_map.get(original_control_input, None)
         if copied_control_input is None:
             control_mutations.append(
-                lift_to_graph._ControlMutation(copied_op=None,
-                                               old_graph_op=original_control_input))
+                lift_to_graph._ControlMutation(
+                    copied_op=None, old_graph_op=original_control_input
+                )
+            )
         else:
             copied_control_inputs.append(copied_control_input)
 
@@ -135,19 +145,21 @@ def patched_copy_non_source(op, graph, op_map, base_graph):
             inputs=copied_inputs,
             dtypes=[x.dtype for x in op.outputs],
             attrs={
-                key: value for key, value in op.node_def.attr.items()
-                if not key.startswith("_class") and
-                not key.startswith("_tpu_replicate")
+                key: value
+                for key, value in op.node_def.attr.items()
+                if not key.startswith("_class") and not key.startswith("_tpu_replicate")
             },
-            name=op.name)
+            name=op.name,
+        )
     op_map[op] = copied_op
     for i, o in enumerate(op.outputs):
         op_map[o] = copied_op.outputs[i]
 
-    return ([mutation._replace(copied_op=copied_op)
-             for mutation in input_mutations],
-            [mutation._replace(copied_op=copied_op)
-             for mutation in control_mutations])
+    return (
+        [mutation._replace(copied_op=copied_op) for mutation in input_mutations],
+        [mutation._replace(copied_op=copied_op) for mutation in control_mutations],
+    )
+
 
 lift_to_graph._copy_non_source = patched_copy_non_source
 
