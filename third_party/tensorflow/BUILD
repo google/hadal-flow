@@ -30,7 +30,7 @@ dynamic_genrule(
 genrule(
     name = "hermetic_tf_lib",
     outs = ["libtensorflow_framework.so"],
-    cmd = "$(location :extract_tf_lib) $@",
+    cmd = "$(execpath :extract_tf_lib) $@",
     tools = [":extract_tf_lib"],
 )
 

@@ -2,7 +2,6 @@ import tensorflow as tf
 import hadal_flow as hadal
 import test_utils
 
-
 # These test cases are for the PtPtOptimizer, which optimizes the tf graph by
 # reordering plaintext - plaintext operations which look like op( encode(a),
 # <encode(b)>) to encode( op(a, <b>) ) where <> indicate optional arguments.

@@ -151,7 +151,7 @@ class TestPlaintextPostScale(tf.test.TestCase):
     def _test_mnist_post_scale_eager_vs_deferred(self, eager_mode):
         tf.config.run_functions_eagerly(eager_mode)
 
-        (x_batch, y_batch) = next(iter(train_dataset))
+        x_batch, y_batch = next(iter(train_dataset))
 
         # Plaintext
         ps_grads = train_step(x_batch, y_batch)
@@ -177,7 +177,7 @@ class TestPlaintextPostScale(tf.test.TestCase):
         train_dataset_iter = iter(train_dataset)
 
         for i in range(8):
-            (x_batch, y_batch) = next(train_dataset_iter)
+            x_batch, y_batch = next(train_dataset_iter)
             # Plaintext post scale.
             ps_grads = train_step(x_batch, y_batch)
             ps_grads = [tf.reduce_sum(g, axis=0) for g in ps_grads]

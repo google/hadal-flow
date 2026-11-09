@@ -21,7 +21,6 @@ from packaging import tags, version
 from platform import python_version
 from enum import Enum
 
-
 bazel_dir_var = "BUILD_WORKSPACE_DIRECTORY"
 if not bazel_dir_var in os.environ:
     raise Exception(f"{bazel_dir_var} not defined")

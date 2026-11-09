@@ -2,7 +2,6 @@ import tensorflow as tf
 import hadal_flow as hadal
 import test_utils
 
-
 # These test cases are for the CtPtOptimizer, which optimizes the tf graph by
 # reordering ciphertext - plaintext operations which look like
 # ((ct + pt) + pt) to (ct + (pt + pt).

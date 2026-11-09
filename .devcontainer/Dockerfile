@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-24.04
 
 # Install Bazel
-ARG BAZELISK_VERSION=v1.29.0
+ARG BAZELISK_VERSION=v1.30.0
 ARG BAZELISK_DOWNLOAD_SHA=dev-mode
 RUN curl -fSsL -o /usr/local/bin/bazelisk https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VERSION}/bazelisk-linux-amd64 \
     && ([ "${BAZELISK_DOWNLOAD_SHA}" = "dev-mode" ] || (sha256sum /usr/local/bin/bazelisk && echo "${BAZELISK_DOWNLOAD_SHA} */usr/local/bin/bazelisk" | sha256sum --check - )) \

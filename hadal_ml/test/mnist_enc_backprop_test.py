@@ -106,7 +106,7 @@ class TestMNISTBackprop(tf.test.TestCase):
         y1 = hidden_layer(tf.zeros((batch_size, 784)))
         y2 = output_layer(y1)
 
-        (x_batch, y_batch) = next(iter(train_dataset))
+        x_batch, y_batch = next(iter(train_dataset))
 
         # Plaintext backprop.
         output_layer_grad, hidden_layer_grad = train_step(
