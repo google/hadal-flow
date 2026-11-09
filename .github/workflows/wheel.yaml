@@ -21,8 +21,7 @@ jobs:
         python-version: ["3.10", "3.11", "3.12", "3.13"]  # Also see MODULE.bazel
 
     steps:
-      - uses: actions/checkout@v4
-
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Build wheel
         shell: bash
         run: |
@@ -32,7 +31,7 @@ jobs:
           bazelisk build //:wheel
           bazelisk run //:wheel_rename
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: artifact-${{ matrix.os }}-${{ matrix.python-version }}
           path: bazel-bin/*.whl
@@ -48,11 +47,31 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - name: Download wheels
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: 'artifact-*'
           path: dist
           merge-multiple: true
 
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Install OSS Exit Gate staging dependencies
+        run: python3 -m pip install --upgrade pip keyring twine keyrings.google-artifactregistry-auth
+      - name: Authenticate to Google Cloud (OSS Exit Gate WIF)
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: 'projects/305452601764/locations/global/workloadIdentityPools/builders/providers/github'
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+      - name: Stage package in OSS Exit Gate Artifact Registry
+        run: |
+          python3 -m twine upload \
+            --repository-url https://us-python.pkg.dev/oss-exit-gate-prod/hadal-flow--pypi \
+            dist/*
+      - name: Trigger OSS Exit Gate release
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          echo '{"publish_all": true}' > publish_all.json
+          unset CLOUDSDK_CORE_PROJECT
+          gcloud storage cp publish_all.json \
+            "gs://oss-exit-gate-prod-projects-bucket/hadal-flow/pypi/manifests/manifest-${RUN_ID}-${RUN_ATTEMPT}.json"
